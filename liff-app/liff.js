@@ -30,7 +30,6 @@ function handlerToggleLed() {
 
     uiToggleLedButton(ledState);
     liffToggleDeviceLedState(ledState);
-    liffSendMyMsg("ABC");
 }
 
 // ------------ //
@@ -223,6 +222,7 @@ function liffGetUserService(service) {
 
         // Switch off by default
         liffToggleDeviceLedState(false);
+        liffSendMyMsg("ABC");
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
