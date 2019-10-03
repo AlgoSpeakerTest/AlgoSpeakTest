@@ -30,7 +30,6 @@ function handlerToggleLed() {
 
     uiToggleLedButton(ledState);
     liffToggleDeviceLedState(ledState);
-    liffSendMyMsg("AAAA");
 }
 
 // ------------ //
@@ -40,7 +39,7 @@ function handlerToggleLed() {
 function uiToggleLedButton(state) {
     const el = document.getElementById("btn-led-toggle");
     el.innerText = state ? "Switch LED OFF" : "Switch LED ON";
-	
+
     if (state) {
       el.classList.add("led-on");
     } else {
@@ -50,7 +49,7 @@ function uiToggleLedButton(state) {
 
 function uiCountPressButton() {
     clickCount++;
-	clickCount++;
+
     const el = document.getElementById("click-count");
     el.innerText = clickCount;
 }
@@ -223,7 +222,6 @@ function liffGetUserService(service) {
 
         // Switch off by default
         liffToggleDeviceLedState(false);
-        
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -255,7 +253,7 @@ function liffGetButtonStateCharacteristic(characteristic) {
             } else {
                 // release
                 uiToggleStateButton(false);
-                liffSendMyMsg("BBB");
+                uiCountPressButton();
             }
         });
     }).catch(error => {
@@ -271,15 +269,4 @@ function liffToggleDeviceLedState(state) {
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
-}
-
-
-function liffSendMyMsg(message){
-	liff.sendMessages([
-	  {
-	    type:'text',
-	    text:'Hello, World!'
-	  }
-	]);
-	uiCountPressButton();
 }
