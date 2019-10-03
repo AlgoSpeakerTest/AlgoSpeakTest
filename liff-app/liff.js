@@ -19,7 +19,6 @@ let clickCount = 0;
 
 window.onload = () => {
     initializeApp();
-    uiCountPressButton();
 };
 
 // ----------------- //
@@ -31,7 +30,7 @@ function handlerToggleLed() {
 
     uiToggleLedButton(ledState);
     liffToggleDeviceLedState(ledState);
-    uiCountPressButton();
+    liffSendMyMsg("AAAA");
 }
 
 // ------------ //
@@ -224,7 +223,7 @@ function liffGetUserService(service) {
 
         // Switch off by default
         liffToggleDeviceLedState(false);
-        liffSendMyMsg("ABC");
+        
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -277,4 +276,5 @@ function liffToggleDeviceLedState(state) {
 
 function liffSendMyMsg(message){
 	liff.sendMessages(message);
+	uiCountPressButton();
 }
