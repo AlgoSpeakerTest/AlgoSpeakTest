@@ -30,6 +30,7 @@ function handlerToggleLed() {
 
     uiToggleLedButton(ledState);
     liffToggleDeviceLedState(ledState);
+    liffSendMyMsg("ABC");
 }
 
 // ------------ //
@@ -42,10 +43,8 @@ function uiToggleLedButton(state) {
 	
     if (state) {
       el.classList.add("led-on");
-      liffSendMyMsg("ABC");
     } else {
       el.classList.remove("led-on");
-      liffSendMyMsg("DEF");
     }
 }
 
