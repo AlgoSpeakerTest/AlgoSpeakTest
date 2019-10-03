@@ -275,6 +275,11 @@ function liffToggleDeviceLedState(state) {
 
 
 function liffSendMyMsg(message){
-	liff.sendMessages(message);
+	liff.sendMessages([
+	  {
+	    type:'text',
+	    text:'Hello, World!'
+	  }
+	]);
 	uiCountPressButton();
 }
