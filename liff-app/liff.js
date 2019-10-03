@@ -247,7 +247,7 @@ function liffGetButtonStateCharacteristic(characteristic) {
         characteristic.addEventListener('characteristicvaluechanged', e => {
             const val = (new Uint8Array(e.target.value.buffer))[0];
             byte_array = new Uint8Array(e.target.value.buffer);
-            liffSendMyMsg("UPLOAD: " + byte_array[0].toString() + " " + byte_array[1].toString() + " "+byte_array[2].toString());
+            liffSendMyMsg("UPLOAD: " + byte_array[0].toString() + " " + byte_array[1].toString() + " "+byte_array[2].toString()+ " "+byte_array[3].toString());
             if (val > 0) {
                 // press
                 uiToggleStateButton(true);
