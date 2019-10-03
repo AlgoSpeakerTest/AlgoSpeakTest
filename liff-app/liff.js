@@ -1,5 +1,5 @@
 // User service UUID: Change this to your generated service UUID
-const USER_SERVICE_UUID         = '91E4E176-D0B9-464D-9FE4-52EE3E9F1552'; // LED, Button
+const USER_SERVICE_UUID         = '5f0e85c8-86c4-42b6-94e8-3b2391f2015a'; // LED, Button
 
 // User service characteristics
 const LED_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
@@ -255,7 +255,6 @@ function liffGetButtonStateCharacteristic(characteristic) {
             } else {
                 // release
                 uiToggleStateButton(false);
-                liffSendMyMsg("BBB");
             }
         });
     }).catch(error => {
