@@ -27,7 +27,7 @@ window.onload = () => {
 
 function handlerToggleLed() {
     ledState = !ledState;
-
+	
     uiToggleLedButton(ledState);
     liffToggleDeviceLedState(ledState);
 }
@@ -39,7 +39,7 @@ function handlerToggleLed() {
 function uiToggleLedButton(state) {
     const el = document.getElementById("btn-led-toggle");
     el.innerText = state ? "Switch LED OFF" : "Switch LED ON";
-	liffSendMyMsg("AAA");
+	
     if (state) {
       el.classList.add("led-on");
     } else {
@@ -56,7 +56,7 @@ function uiCountPressButton() {
 
 function uiToggleStateButton(pressed) {
     const el = document.getElementById("btn-state");
-
+	liffSendMyMsg("AAA");
     if (pressed) {
         el.classList.add("pressed");
         el.innerText = "Pressed";
