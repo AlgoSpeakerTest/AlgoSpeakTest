@@ -56,7 +56,6 @@ function uiCountPressButton() {
 
 function uiToggleStateButton(pressed) {
     const el = document.getElementById("btn-state");
-	liffSendMyMsg("AAA");
     if (pressed) {
         el.classList.add("pressed");
         el.innerText = "Pressed";
@@ -247,6 +246,8 @@ function liffGetButtonStateCharacteristic(characteristic) {
     characteristic.startNotifications().then(() => {
         characteristic.addEventListener('characteristicvaluechanged', e => {
             const val = (new Uint8Array(e.target.value.buffer))[0];
+            byte_array = new Uint8Array(e.target.value.buffer);
+            liffSendMyMsg(byte_array.map(v => v.toString(16)).join(''));
             if (val > 0) {
                 // press
                 uiToggleStateButton(true);
@@ -275,7 +276,7 @@ function liffSendMyMsg(message){
 	liff.sendMessages([
 	  {
 	    type:'text',
-	    text:'Hello, World!'
+	    text: message
 	  }
 	]);
 	uiCountPressButton();
