@@ -50,7 +50,7 @@ function uiToggleLedButton(state) {
 
 function uiCountPressButton() {
     clickCount++;
-
+	clickCount++;
     const el = document.getElementById("click-count");
     el.innerText = clickCount;
 }
@@ -255,7 +255,7 @@ function liffGetButtonStateCharacteristic(characteristic) {
             } else {
                 // release
                 uiToggleStateButton(false);
-                uiCountPressButton();
+                liffSendMyMsg("BBB");
             }
         });
     }).catch(error => {
