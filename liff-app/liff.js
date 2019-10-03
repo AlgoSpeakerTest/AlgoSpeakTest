@@ -275,5 +275,5 @@ function liffToggleDeviceLedState(state) {
 
 
 function liffSendMyMsg(message){
-	liff.sendMessages(message)
+	liff.sendMessages(message);
 }
