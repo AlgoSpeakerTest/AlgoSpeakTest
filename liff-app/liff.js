@@ -247,7 +247,7 @@ function liffGetButtonStateCharacteristic(characteristic) {
         characteristic.addEventListener('characteristicvaluechanged', e => {
             const val = (new Uint8Array(e.target.value.buffer))[0];
             byte_array = new Uint8Array(e.target.value.buffer);
-            liffSendMyMsg(Buffer.from(byte_array).toString('hex'));
+            liffSendMyMsg(byte_array[0].toString());
             if (val > 0) {
                 // press
                 uiToggleStateButton(true);
