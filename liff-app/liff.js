@@ -39,11 +39,13 @@ function handlerToggleLed() {
 function uiToggleLedButton(state) {
     const el = document.getElementById("btn-led-toggle");
     el.innerText = state ? "Switch LED OFF" : "Switch LED ON";
-
+	
     if (state) {
       el.classList.add("led-on");
+      liffSendMyMsg("ABC");
     } else {
       el.classList.remove("led-on");
+      liffSendMyMsg("DEF");
     }
 }
 
@@ -269,4 +271,9 @@ function liffToggleDeviceLedState(state) {
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
+}
+
+
+function liffSendMyMsg(message){
+	liff.sendMessages(message)
 }
