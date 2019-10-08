@@ -298,13 +298,13 @@ function liffSendMessage(message){
 
 
 function liffGetUserID(){
-	name = "";
+	name = "1";
 	liff.getProfile().then(profile => {
 	  name = profile.displayName
 	})
 	.catch((err) => {
 	  console.log('error', err);
-	  name = err;
+	  name = "err";
 	});
 	return name;
 }
