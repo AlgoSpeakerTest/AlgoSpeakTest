@@ -9,10 +9,6 @@ const BTN_CHARACTERISTIC_UUID   = '62FBD229-6EDD-4D1A-B554-5C4E1BB29169';
 const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018a0d293d'; // Device ID
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
-// UI settings
-let sRegEnable = false;
-
-
 
 
 
@@ -33,12 +29,7 @@ window.onload = () => {
 // ----------------- //
 
 function handlerButtonClickReg() {
-    sRegEnable = true;
-	
-    uiToggleRegistrationButton(sRegEnable);
-    liffSendIdToDevice(sRegEnable);
-
-    liffGetUserID();
+    liffSendIdToDevice();
 }
 
 
@@ -224,7 +215,6 @@ function liffConnectToDevice(device) {
             device.removeEventListener('gattserverdisconnected', disconnectCallback);
 
 
-            sRegEnable = false;
             uiToggleRegistrationButton(false);
  
             // Try to reconnect
@@ -269,10 +259,25 @@ function liffGetPSDIService(service) {
 
 
 
+function liffSendIdToDevice(){
+	liff.getProfile().then(profile => {
+		id = profile.userId;
+    	uiToggleRegistrationButton(true);
+		liffSendMesage(true);
+		
+		DispMessage(id);
+	})
+	.catch((err) => {
+		console.log('error', err);
+		DispMessage(err);
+	});
+}
 
-function liffSendIdToDevice(state) {
-    // on: 0x01
-    // off: 0x00
+
+
+
+function liffSendMesage(state) {
+
     window.ledCharacteristic.writeValue(
         state ? new Uint8Array([0x01]) : new Uint8Array([0x00])
     ).catch(error => {
@@ -294,15 +299,7 @@ function liffSendMessage(message){
 
 
 
-function liffGetUserID(){
-	liff.getProfile().then(profile => {
-	  id = profile.userId;
-	  DispMessage(id);
-	})
-	.catch((err) => {
-	  console.log('error', err);
-	});
-}
+
 
 
 function DispMessage(message){
