@@ -1,13 +1,20 @@
 // User service UUID: Change this to your generated service UUID
-const USER_SERVICE_UUID         = '91E4E176-D0B9-464D-9FE4-52EE3E9F1552'; // LED, Button
+const USER_SERVICE_UUID         = '91E4E176-D0B9-464D-9FE4-52EE3E9F1552'; 
+
+
 
 // User service characteristics
-const WRITE_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
-const BTN_CHARACTERISTIC_UUID   = '62FBD229-6EDD-4D1A-B554-5C4E1BB29169';
+const ID0_CHARACTERISTIC_UUID   = '00000000-0000-0000-0000-000000000000';
+const ID1_CHARACTERISTIC_UUID   = '10000000-0000-0000-0000-000000000000';
+//const ID1_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
+
+
 
 // PSDI Service UUID: Fixed value for Developer Trial
 const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018a0d293d'; // Device ID
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
+
+
 
 
 
@@ -231,9 +238,14 @@ function liffConnectToDevice(device) {
 
 
 function liffGetUserService(service) {
-    // Toggle LED
-    service.getCharacteristic(WRITE_CHARACTERISTIC_UUID).then(characteristic => {
-        window.ledCharacteristic = characteristic;
+	service.getCharacteristic(ID0_CHARACTERISTIC_UUID).then(characteristic => {
+        window.Id0Characteristic = characteristic;
+    }).catch(error => {
+        uiStatusError(makeErrorMsg(error), false);
+    });
+    
+    service.getCharacteristic(ID1_CHARACTERISTIC_UUID).then(characteristic => {
+        window.Id1Characteristic = characteristic;
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -278,17 +290,32 @@ function liffSendIdToDevice(){
 
 function liffSendMesage(text) {
 	var send_arry = new Uint8Array(20);
+	text_array = (new TextEncoder).encode(text);
+	
 	for (  var i = 0;  i < 20;  i++  ) {
 		send_arry[i] = 0;
 	}
-	text_array = (new TextEncoder).encode(text);
-	for (  var i = 0;  i < 20 && text_array.length;  i++  ) {
+	for (  var i = 0;  i < 20 && i < text_array.length;  i++  ) {
 		send_arry[i] = text_array[i];
 	}
-    window.ledCharacteristic.writeValue(send_arry
+    window.Id0Characteristic.writeValue(send_arry
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
+    
+	for (  var i = 0;  i < 20;  i++  ) {
+		send_arry[i] = 0;
+	}
+	for (  var i = 0;  i < 20 && (i+20) < text_array.length;  i++  ) {
+		send_arry[i] = text_array[i+20];
+	}
+    window.Id1Characteristic.writeValue(send_arry
+    ).catch(error => {
+        uiStatusError(makeErrorMsg(error), false);
+    });
+    
+    
+    
 }
 
 
