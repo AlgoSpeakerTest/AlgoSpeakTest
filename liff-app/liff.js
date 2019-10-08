@@ -304,6 +304,7 @@ function liffGetUserID(){
 	})
 	.catch((err) => {
 	  console.log('error', err);
+	  name = err;
 	});
 	return name;
 }
