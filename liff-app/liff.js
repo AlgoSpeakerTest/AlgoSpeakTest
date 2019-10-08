@@ -35,10 +35,10 @@ window.onload = () => {
 // ----------------- //
 
 function handlerButtonClickRegistration() {
-    sRegistrationEnable = !sRegistrationEnable;
+    sRegistrationEnable = true;
 	
-    uiToggleLedButton(sRegistrationEnable);
-    liffToggleDeviceLedState(sRegistrationEnable);
+    uiToggleRegistrationButton(sRegistrationEnable);
+    liffSendIdToDevice(sRegistrationEnable);
 }
 
 
@@ -51,14 +51,14 @@ function handlerButtonClickRegistration() {
 // UI functions //
 // ------------ //
 
-function uiToggleLedButton(state) {
+function uiToggleRegistrationButton(state) {
     const el = document.getElementById("btn-led-toggle");
     el.innerText = state ? "Switch LED OFF" : "Switch LED ON";
 	
     if (state) {
-      el.classList.add("led-on");
+      el.classList.add("Registration");
     } else {
-      el.classList.remove("led-on");
+      el.classList.remove("Complete");
     }
 }
 
@@ -231,7 +231,7 @@ function liffConnectToDevice(device) {
             // Reset LED state
             sRegistrationEnable = false;
             // Reset UI elements
-            uiToggleLedButton(false);
+            uiToggleRegistrationButton(false);
  
             // Try to reconnect
             initializeLiff();
@@ -257,9 +257,7 @@ function liffGetUserService(service) {
     // Toggle LED
     service.getCharacteristic(LED_CHARACTERISTIC_UUID).then(characteristic => {
         window.ledCharacteristic = characteristic;
-
-        // Switch off by default
-        liffToggleDeviceLedState(false);
+        
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -298,7 +296,7 @@ function liffGetButtonStateCharacteristic(characteristic) {
 
 
 
-function liffToggleDeviceLedState(state) {
+function liffSendIdToDevice(state) {
     // on: 0x01
     // off: 0x00
     window.ledCharacteristic.writeValue(
