@@ -285,7 +285,7 @@ function liffSendMesage(text) {
 	for (  var i = 0;  i < 20 && text_array.length;  i++  ) {
 		send_arry[i] = text_array[i];
 	}
-    window.ledCharacteristic.writeValue(send_arry)
+    window.ledCharacteristic.writeValue(send_arry
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
