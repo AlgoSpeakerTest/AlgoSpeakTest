@@ -299,13 +299,10 @@ function liffSendMessage(message){
 
 function liffGetUserID(){
 	name = "1";
-	liff.getProfile().then(profile => {
-	  name = profile.displayName
-	})
-	.catch((err) => {
-	  console.log('error', err);
-	  name = "err";
-	});
+	data = liff.getProfile();
+	name = data.userId;
+	
+	
 	return name;
 }
 
