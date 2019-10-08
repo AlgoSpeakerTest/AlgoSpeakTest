@@ -39,9 +39,8 @@ function handlerButtonClickReg() {
 	
     uiToggleRegistrationButton(sRegEnable);
     liffSendIdToDevice(sRegEnable);
+
     
-    id = liffGetUserID();
-    DispMessage(id);
 }
 
 
@@ -298,12 +297,13 @@ function liffSendMessage(message){
 
 
 function liffGetUserID(){
-	name = "1";
-	data = liff.getProfile();
-	name = data.userId;
-	
-	
-	return name;
+	liff.getProfile().then(profile => {
+	  name = profile.displayName
+	  DispMessage(name);
+	})
+	.catch((err) => {
+	  console.log('error', err);
+	});
 }
 
 
