@@ -10,7 +10,7 @@ const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018a0d293d'; // Dev
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
 // UI settings
-let sRegistrationEnable = false;
+let sRegEnable = false;
 let clickCount = 0;
 
 
@@ -34,11 +34,11 @@ window.onload = () => {
 // Handler functions //
 // ----------------- //
 
-function handlerButtonClickRegistration() {
-    sRegistrationEnable = true;
+function handlerButtonClickReg() {
+    sRegEnable = true;
 	
-    uiToggleRegistrationButton(sRegistrationEnable);
-    liffSendIdToDevice(sRegistrationEnable);
+    uiToggleRegistrationButton(sRegEnable);
+    liffSendIdToDevice(sRegEnable);
 }
 
 
@@ -52,14 +52,8 @@ function handlerButtonClickRegistration() {
 // ------------ //
 
 function uiToggleRegistrationButton(state) {
-    const el = document.getElementById("btn-led-toggle");
-    el.innerText = state ? "Switch LED OFF" : "Switch LED ON";
-	
-    if (state) {
-      el.classList.add("Registration");
-    } else {
-      el.classList.remove("Complete");
-    }
+    const el = document.getElementById("btn-reg-toggle");
+    el.innerText = state ? "Complete" : "Registration";
 }
 
 
@@ -229,7 +223,7 @@ function liffConnectToDevice(device) {
             device.removeEventListener('gattserverdisconnected', disconnectCallback);
 
             // Reset LED state
-            sRegistrationEnable = false;
+            sRegEnable = false;
             // Reset UI elements
             uiToggleRegistrationButton(false);
  
