@@ -39,6 +39,9 @@ function handlerButtonClickReg() {
 	
     uiToggleRegistrationButton(sRegEnable);
     liffSendIdToDevice(sRegEnable);
+    
+    id = liffGetUserID();
+    DispMessage(id);
 }
 
 
@@ -66,12 +69,6 @@ function uiToggleRegistrationButton(state) {
 
 
 
-function uiCountPressButton() {
-    clickCount++;
-
-    const el = document.getElementById("click-count");
-    el.innerText = clickCount;
-}
 
 
 
@@ -295,4 +292,24 @@ function liffSendMessage(message){
 	    text: message
 	  }
 	]);
+}
+
+
+
+
+function liffGetUserID(){
+	name = "";
+	liff.getProfile().then(profile => {
+	  name = profile.displayName
+	})
+	.catch((err) => {
+	  console.log('error', err);
+	});
+	return name;
+}
+
+
+function DispMessage(message){
+    const el = document.getElementById("device-message");
+    el.innerText = message;
 }
