@@ -10,8 +10,13 @@ const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018a0d293d'; // Dev
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
 // UI settings
-let ledState = false; // true: LED on, false: LED off
+let sRegistrationEnable = false;
 let clickCount = 0;
+
+
+
+
+
 
 // -------------- //
 // On window load //
@@ -21,16 +26,26 @@ window.onload = () => {
     initializeApp();
 };
 
+
+
+
+
 // ----------------- //
 // Handler functions //
 // ----------------- //
 
-function handlerToggleLed() {
-    ledState = !ledState;
+function handlerButtonClickRegistration() {
+    sRegistrationEnable = !sRegistrationEnable;
 	
-    uiToggleLedButton(ledState);
-    liffToggleDeviceLedState(ledState);
+    uiToggleLedButton(sRegistrationEnable);
+    liffToggleDeviceLedState(sRegistrationEnable);
 }
+
+
+
+
+
+
 
 // ------------ //
 // UI functions //
@@ -47,6 +62,10 @@ function uiToggleLedButton(state) {
     }
 }
 
+
+
+
+
 function uiCountPressButton() {
     clickCount++;
 
@@ -54,16 +73,12 @@ function uiCountPressButton() {
     el.innerText = clickCount;
 }
 
-function uiToggleStateButton(pressed) {
-    const el = document.getElementById("btn-state");
-    if (pressed) {
-        el.classList.add("pressed");
-        el.innerText = "Pressed";
-    } else {
-        el.classList.remove("pressed");
-        el.innerText = "Released";
-    }
-}
+
+
+
+
+
+
 
 function uiToggleDeviceConnected(connected) {
     const elStatus = document.getElementById("status");
@@ -92,6 +107,10 @@ function uiToggleDeviceConnected(connected) {
     }
 }
 
+
+
+
+
 function uiToggleLoadingAnimation(isLoading) {
     const elLoading = document.getElementById("loading-animation");
 
@@ -103,6 +122,10 @@ function uiToggleLoadingAnimation(isLoading) {
         elLoading.classList.add("hidden");
     }
 }
+
+
+
+
 
 function uiStatusError(message, showLoadingAnimation) {
     uiToggleLoadingAnimation(showLoadingAnimation);
@@ -120,9 +143,18 @@ function uiStatusError(message, showLoadingAnimation) {
     elControls.classList.add("hidden");
 }
 
+
+
+
+
 function makeErrorMsg(errorObj) {
     return "Error\n" + errorObj.code + "\n" + errorObj.message;
 }
+
+
+
+
+
 
 // -------------- //
 // LIFF functions //
@@ -132,6 +164,9 @@ function initializeApp() {
     liff.init(() => initializeLiff(), error => uiStatusError(makeErrorMsg(error), false));
 }
 
+
+
+
 function initializeLiff() {
     liff.initPlugins(['bluetooth']).then(() => {
         liffCheckAvailablityAndDo(() => liffRequestDevice());
@@ -139,6 +174,8 @@ function initializeLiff() {
         uiStatusError(makeErrorMsg(error), false);
     });
 }
+
+
 
 function liffCheckAvailablityAndDo(callbackIfAvailable) {
     // Check Bluetooth availability
@@ -192,11 +229,10 @@ function liffConnectToDevice(device) {
             device.removeEventListener('gattserverdisconnected', disconnectCallback);
 
             // Reset LED state
-            ledState = false;
+            sRegistrationEnable = false;
             // Reset UI elements
             uiToggleLedButton(false);
-            uiToggleStateButton(false);
-
+ 
             // Try to reconnect
             initializeLiff();
         };
@@ -206,6 +242,9 @@ function liffConnectToDevice(device) {
         uiStatusError(makeErrorMsg(error), false);
     });
 }
+
+
+
 
 function liffGetUserService(service) {
     // Button pressed state
@@ -226,6 +265,9 @@ function liffGetUserService(service) {
     });
 }
 
+
+
+
 function liffGetPSDIService(service) {
     // Get PSDI value
     service.getCharacteristic(PSDI_CHARACTERISTIC_UUID).then(characteristic => {
@@ -240,27 +282,21 @@ function liffGetPSDIService(service) {
     });
 }
 
+
+
+
 function liffGetButtonStateCharacteristic(characteristic) {
     // Add notification hook for button state
     // (Get notified when button state changes)
     characteristic.startNotifications().then(() => {
-        characteristic.addEventListener('characteristicvaluechanged', e => {
-            const val = (new Uint8Array(e.target.value.buffer))[0];
-            byte_array = new Uint8Array(e.target.value.buffer);
-            liffSendMyMsg("UPLOAD: " + byte_array[0].toString() + " " + byte_array[1].toString() + " "+byte_array[2].toString()+ " "+byte_array[3].toString());
-            if (val > 0) {
-                // press
-                uiToggleStateButton(true);
-            } else {
-                // release
-                uiToggleStateButton(false);
-                uiCountPressButton();
-            }
-        });
+        uiCountPressButton();
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
 }
+
+
+
 
 function liffToggleDeviceLedState(state) {
     // on: 0x01
@@ -272,12 +308,13 @@ function liffToggleDeviceLedState(state) {
     });
 }
 
-function liffSendMyMsg(message){
+
+
+function liffSendMessage(message){
 	liff.sendMessages([
 	  {
 	    type:'text',
 	    text: message
 	  }
 	]);
-	uiCountPressButton();
 }
