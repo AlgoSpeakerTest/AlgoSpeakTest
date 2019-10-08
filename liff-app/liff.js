@@ -2,7 +2,7 @@
 const USER_SERVICE_UUID         = '91E4E176-D0B9-464D-9FE4-52EE3E9F1552'; // LED, Button
 
 // User service characteristics
-const LED_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
+const WRITE_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 const BTN_CHARACTERISTIC_UUID   = '62FBD229-6EDD-4D1A-B554-5C4E1BB29169';
 
 // PSDI Service UUID: Fixed value for Developer Trial
@@ -54,6 +54,12 @@ function handlerButtonClickReg() {
 function uiToggleRegistrationButton(state) {
     const el = document.getElementById("btn-reg-toggle");
     el.innerText = state ? "Complete" : "Registration";
+    
+    if (state) {
+      el.classList.add("led-on");
+    } else {
+      el.classList.remove("led-on");
+    }
 }
 
 
@@ -186,6 +192,7 @@ function liffCheckAvailablityAndDo(callbackIfAvailable) {
     });;
 }
 
+
 function liffRequestDevice() {
     liff.bluetooth.requestDevice().then(device => {
         liffConnectToDevice(device);
@@ -222,9 +229,8 @@ function liffConnectToDevice(device) {
             // Remove disconnect callback
             device.removeEventListener('gattserverdisconnected', disconnectCallback);
 
-            // Reset LED state
+
             sRegEnable = false;
-            // Reset UI elements
             uiToggleRegistrationButton(false);
  
             // Try to reconnect
@@ -241,17 +247,9 @@ function liffConnectToDevice(device) {
 
 
 function liffGetUserService(service) {
-    // Button pressed state
-    service.getCharacteristic(BTN_CHARACTERISTIC_UUID).then(characteristic => {
-        liffGetButtonStateCharacteristic(characteristic);
-    }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
-    });
-
     // Toggle LED
-    service.getCharacteristic(LED_CHARACTERISTIC_UUID).then(characteristic => {
+    service.getCharacteristic(WRITE_CHARACTERISTIC_UUID).then(characteristic => {
         window.ledCharacteristic = characteristic;
-        
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -274,18 +272,6 @@ function liffGetPSDIService(service) {
     });
 }
 
-
-
-
-function liffGetButtonStateCharacteristic(characteristic) {
-    // Add notification hook for button state
-    // (Get notified when button state changes)
-    characteristic.startNotifications().then(() => {
-        uiCountPressButton();
-    }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
-    });
-}
 
 
 
