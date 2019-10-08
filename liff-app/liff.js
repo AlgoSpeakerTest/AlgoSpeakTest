@@ -263,7 +263,7 @@ function liffSendIdToDevice(){
 	liff.getProfile().then(profile => {
 		id = profile.userId;
     	uiToggleRegistrationButton(true);
-		liffSendMesage(true);
+		liffSendMesage(id);
 		
 		DispMessage(id);
 	})
@@ -276,10 +276,16 @@ function liffSendIdToDevice(){
 
 
 
-function liffSendMesage(state) {
-
-    window.ledCharacteristic.writeValue(
-        state ? new Uint8Array([0x01]) : new Uint8Array([0x00])
+function liffSendMesage(text) {
+	var send_arry = new Uint8Array(20);
+	for (  var i = 0;  i < 20;  i++  ) {
+		send_arry[i] = 0;
+	}
+	text_array = (new TextEncoder).encode(text);
+	for (  var i = 0;  i < 20 && text_array.length;  i++  ) {
+		send_arry[i] = text_array[i];
+	}
+    window.ledCharacteristic.writeValue(send_arry)
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
