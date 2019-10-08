@@ -11,9 +11,9 @@ const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
 // UI settings
 let sRegEnable = false;
-let clickCount = 0;
 
 
+let sDeviceId = "";
 
 
 
@@ -40,7 +40,7 @@ function handlerButtonClickReg() {
     uiToggleRegistrationButton(sRegEnable);
     liffSendIdToDevice(sRegEnable);
 
-    
+    liffGetUserID();
 }
 
 
@@ -298,8 +298,8 @@ function liffSendMessage(message){
 
 function liffGetUserID(){
 	liff.getProfile().then(profile => {
-	  name = profile.displayName
-	  DispMessage(name);
+	  sDeviceId = profile.displayName
+	  DispMessage(sDeviceId);
 	})
 	.catch((err) => {
 	  console.log('error', err);
