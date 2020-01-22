@@ -1,6 +1,6 @@
 // User service UUID: Change this to your generated service UUID
+//const USER_SERVICE_UUID         = '91E4E176-D0B9-464D-9FE4-52EE3E9F1552'; 
 const USER_SERVICE_UUID         = '91E4E176-D0B9-464D-9FE4-52EE3E9F1552'; 
-
 
 
 // User service characteristics
@@ -230,7 +230,7 @@ function liffConnectToDevice(device) {
 
         device.addEventListener('gattserverdisconnected', disconnectCallback);
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('TEST ' + makeErrorMsg(error), false);
     });
 }
 
@@ -241,13 +241,13 @@ function liffGetUserService(service) {
 	service.getCharacteristic(ID0_CHARACTERISTIC_UUID).then(characteristic => {
         window.Id0Characteristic = characteristic;
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('TEST ' + makeErrorMsg(error), false);
     });
     
     service.getCharacteristic(ID1_CHARACTERISTIC_UUID).then(characteristic => {
         window.Id1Characteristic = characteristic;
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('TEST ' + makeErrorMsg(error), false);
     });
 }
 
@@ -264,7 +264,7 @@ function liffGetPSDIService(service) {
             .reduce((output, byte) => output + ("0" + byte.toString(16)).slice(-2), "");
         document.getElementById("device-psdi").innerText = psdi;
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('TEST ' + makeErrorMsg(error), false);
     });
 }
 
@@ -281,7 +281,7 @@ function liffSendIdToDevice(){
 	})
 	.catch((err) => {
 		console.log('error', err);
-		DispMessage(err);
+		DispMessage('TEST ' + err);
 	});
 }
 
