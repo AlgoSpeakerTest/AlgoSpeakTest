@@ -153,7 +153,7 @@ function makeErrorMsg(errorObj) {
 // -------------- //
 
 function initializeApp() {
-    liff.init(() => initializeLiff(), error => uiStatusError(makeErrorMsg(error), false));
+    liff.init(() => initializeLiff(), error => uiStatusError('erroe01' + makeErrorMsg(error), false));
 }
 
 
@@ -163,7 +163,7 @@ function initializeLiff() {
     liff.initPlugins(['bluetooth']).then(() => {
         liffCheckAvailablityAndDo(() => liffRequestDevice());
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe02' + makeErrorMsg(error), false);
     });
 }
 
@@ -180,7 +180,7 @@ function liffCheckAvailablityAndDo(callbackIfAvailable) {
             setTimeout(() => liffCheckAvailablityAndDo(callbackIfAvailable), 10000);
         }
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe03' + makeErrorMsg(error), false);
     });;
 }
 
@@ -189,7 +189,7 @@ function liffRequestDevice() {
     liff.bluetooth.requestDevice().then(device => {
         liffConnectToDevice(device);
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe04' + makeErrorMsg(error), false);
     });
 }
 
@@ -205,12 +205,12 @@ function liffConnectToDevice(device) {
         device.gatt.getPrimaryService(USER_SERVICE_UUID).then(service => {
             liffGetUserService(service);
         }).catch(error => {
-            uiStatusError(makeErrorMsg(error), false);
+            uiStatusError('erroe05' + makeErrorMsg(error), false);
         });
         device.gatt.getPrimaryService(PSDI_SERVICE_UUID).then(service => {
             liffGetPSDIService(service);
         }).catch(error => {
-            uiStatusError(makeErrorMsg(error), false);
+            uiStatusError('erroe06' + makeErrorMsg(error), false);
         });
 
         // Device disconnect callback
@@ -230,7 +230,7 @@ function liffConnectToDevice(device) {
 
         device.addEventListener('gattserverdisconnected', disconnectCallback);
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe07' + makeErrorMsg(error), false);
     });
 }
 
@@ -241,13 +241,13 @@ function liffGetUserService(service) {
 	service.getCharacteristic(ID0_CHARACTERISTIC_UUID).then(characteristic => {
         window.Id0Characteristic = characteristic;
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe08' + makeErrorMsg(error), false);
     });
     
     service.getCharacteristic(ID1_CHARACTERISTIC_UUID).then(characteristic => {
         window.Id1Characteristic = characteristic;
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe09' + makeErrorMsg(error), false);
     });
 }
 
@@ -264,7 +264,7 @@ function liffGetPSDIService(service) {
             .reduce((output, byte) => output + ("0" + byte.toString(16)).slice(-2), "");
         document.getElementById("device-psdi").innerText = psdi;
     }).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe10' + makeErrorMsg(error), false);
     });
 }
 
@@ -272,7 +272,17 @@ function liffGetPSDIService(service) {
 
 
 function liffSendIdToDevice(){
-
+	liff.getProfile().then(profile => {
+		id = profile.userId;
+    	uiToggleRegistrationButton(true);
+		liffSendMesage(id);
+		
+		DispMessage(id);
+	})
+	.catch((err) => {
+		console.log('error', err);
+		DispMessage(err);
+	});
 }
 
 
@@ -290,7 +300,7 @@ function liffSendMesage(text) {
 	}
     window.Id0Characteristic.writeValue(send_arry
     ).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe11' + makeErrorMsg(error), false);
     });
     
 	for (  var i = 0;  i < 20;  i++  ) {
@@ -301,7 +311,7 @@ function liffSendMesage(text) {
 	}
     window.Id1Characteristic.writeValue(send_arry
     ).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
+        uiStatusError('erroe12' + makeErrorMsg(error), false);
     });
     
     
