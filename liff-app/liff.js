@@ -51,7 +51,7 @@ function handlerButtonClickReg() {
 
 function uiToggleRegistrationButton(state) {
     const el = document.getElementById("btn-reg-toggle");
-    el.innerText = state ? "Registration Complete" : "Registration";
+    el.innerText = state ? "ìoò^äÆóπÅ@IDÇëóêMÇµÇ‹ÇµÇΩ" : "ìoò^";
     
     if (state) {
       el.classList.add("led-on");
@@ -303,7 +303,16 @@ function liffSendMesage(text) {
         uiStatusError('erroe11' + makeErrorMsg(error), false);
     });
     
-
+	for (  var i = 0;  i < 20;  i++  ) {
+		send_arry[i] = 0;
+	}
+	for (  var i = 0;  i < 20 && (i+20) < text_array.length;  i++  ) {
+		send_arry[i] = text_array[i+20];
+	}
+    window.Id1Characteristic.writeValue(send_arry
+    ).catch(error => {
+        uiStatusError('erroe12' + makeErrorMsg(error), false);
+    });
     
     
     
