@@ -51,7 +51,7 @@ function handlerButtonClickReg() {
 
 function uiToggleRegistrationButton(state) {
     const el = document.getElementById("btn-reg-toggle");
-    el.innerText = state ? "“o˜^Š®—¹@ID‚ğ‘—M‚µ‚Ü‚µ‚½" : "“o˜^";
+    el.innerText = state ? "ç™»éŒ²å®Œäº†ã€€IDã‚’é€ä¿¡ã—ã¾ã—ãŸ" : "ç™»éŒ²";
     
     if (state) {
       el.classList.add("led-on");
